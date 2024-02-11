@@ -25,6 +25,9 @@ import static io.aeron.CommonContext.newDefaultCncFile;
 import static io.aeron.driver.status.PublisherLimit.PUBLISHER_LIMIT_TYPE_ID;
 import static io.aeron.driver.status.SubscriberPos.SUBSCRIBER_POSITION_TYPE_ID;
 import static io.aeron.driver.status.SystemCounterDescriptor.SYSTEM_COUNTER_TYPE_ID;
+import static io.aeron.driver.status.RecieveChannelStatus.RECEIVE_CHANNEL_STATUS_TYPE_ID;
+import static io.aeron.driver.status.RecieverHwm.RECEIVER_HWM_TYPE_ID;
+import static io.aeron.driver.status.SendChannelStatus.SEND_CHANNEL_STATUS_TYPE_ID;
 
 import java.io.File;
 import java.nio.MappedByteBuffer;

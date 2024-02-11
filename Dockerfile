@@ -14,13 +14,15 @@
 # limitations under the License.
 #
 
-FROM alpine:latest
+# OpenJDK13 not available for alpine linux > 3.18 as of 1 feb 2024
+FROM alpine:3.18
 
 RUN apk add bash git openjdk13
 
 COPY . /aeron-prometheus-stats/
 
-RUN mkdir -p /opt/aeron-prometheus-stats/lib && \
-    cd /aeron-prometheus-stats && \
-    ./gradlew fatJar && \
-    cp ./build/libs/aeron-prometheus-stats-all-1.0-SNAPSHOT.jar /opt/aeron-prometheus-stats/lib
+RUN mkdir -p /opt/aeron-prometheus-stats/lib
+RUN ls /aeron-prometheus-stats/
+RUN dos2unix /aeron-prometheus-stats/gradlew
+RUN cd  /aeron-prometheus-stats/ && ./gradlew fatJar
+RUN cp /aeron-prometheus-stats/build/libs/aeron-prometheus-stats-all-1.0-SNAPSHOT.jar /opt/aeron-prometheus-stats/lib
