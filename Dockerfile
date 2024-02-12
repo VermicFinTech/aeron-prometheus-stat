@@ -15,9 +15,9 @@
 #
 
 # OpenJDK13 not available for alpine linux > 3.18 as of 1 feb 2024
-FROM alpine:3.18
+FROM ghcr.io/vermicfintech/vermiculus-temurin:17.0.6_10-jdk-v2
 
-RUN apk add bash git openjdk13
+RUN apt-get update && apt-get install dos2unix
 
 COPY . /aeron-prometheus-stats/
 

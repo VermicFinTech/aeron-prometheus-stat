@@ -25,8 +25,8 @@ import static io.aeron.CommonContext.newDefaultCncFile;
 import static io.aeron.driver.status.PublisherLimit.PUBLISHER_LIMIT_TYPE_ID;
 import static io.aeron.driver.status.SubscriberPos.SUBSCRIBER_POSITION_TYPE_ID;
 import static io.aeron.driver.status.SystemCounterDescriptor.SYSTEM_COUNTER_TYPE_ID;
-import static io.aeron.driver.status.RecieveChannelStatus.RECEIVE_CHANNEL_STATUS_TYPE_ID;
-import static io.aeron.driver.status.RecieverHwm.RECEIVER_HWM_TYPE_ID;
+import static io.aeron.driver.status.ReceiveChannelStatus.RECEIVE_CHANNEL_STATUS_TYPE_ID;
+import static io.aeron.driver.status.ReceiverHwm.RECEIVER_HWM_TYPE_ID;
 import static io.aeron.driver.status.SendChannelStatus.SEND_CHANNEL_STATUS_TYPE_ID;
 
 import java.io.File;
@@ -183,6 +183,9 @@ public class PrometheusAeronStat {
                 {
                     System.out.println(label);
                     switch (typeId) {
+                        case SEND_CHANNEL_STATUS_TYPE_ID:
+                        case RECEIVER_HWM_TYPE_ID:
+                        case RECEIVE_CHANNEL_STATUS_TYPE_ID:
                         case SYSTEM_COUNTER_TYPE_ID:
                             System.out.println("\tsys");
                             this.updateSystemCounter(counters, counterId, typeId, label);
