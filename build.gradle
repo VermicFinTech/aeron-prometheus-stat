@@ -47,3 +47,25 @@ task fatJar(type: Jar) {
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
+
+final String LINE_BREAK = System.getProperty("line.separator")
+
+task copyExternalLibrariesTask() {
+
+    def externalLibraries = new FileTreeBuilder(new File("${rootProject.projectDir}/external-libraries"))
+    def versions = new StringBuilder()
+
+    from configurations.getByName("implementation")
+    into externalLibraries.baseDir
+    doLast {
+        project.configurations.getByName("implementation").getAllDependencies().each {
+            // strip version number out of agent jar
+            // rename "-${it.version}", ""
+            versions.append("group: $it.group, name: $it.name, version: $it.version").append(LINE_BREAK)
+        }
+        // Add versions file with detailed version of each dependency
+        def versionsFile = new File("${externalLibraries.baseDir}/versions.txt")
+        versionsFile.createNewFile()
+        versionsFile.text = versions.toString()
+    }
+}

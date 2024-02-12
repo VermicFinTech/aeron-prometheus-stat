@@ -26,3 +26,12 @@ RUN ls /aeron-prometheus-stats/
 RUN dos2unix /aeron-prometheus-stats/gradlew
 RUN cd  /aeron-prometheus-stats/ && ./gradlew fatJar
 RUN cp /aeron-prometheus-stats/build/libs/aeron-prometheus-stats-all-1.0-SNAPSHOT.jar /opt/aeron-prometheus-stats/lib
+
+ARG IMAGE_DATE
+ARG IMAGE_VERSION
+
+LABEL org.opencontainers.image.source="https://github.com/VermicFinTech/aeron-prometheus-stat"
+LABEL org.opencontainers.image.created=$IMAGE_DATE
+LABEL org.opencontainers.image.version=$IMAGE_VERSION
+LABEL org.opencontainers.image.title="vermiculus-aeron-prometheus-stats"
+LABEL org.opencontainers.image.description="Tool for exporting Aeron stats to Prometheus"
