@@ -27,6 +27,10 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    aerprom
+}
+
 dependencies {
     testImplementation group: 'junit', name: 'junit', version: '4.12'
     implementation group: 'io.aeron', name: 'aeron-driver', version: '1.41.4'
@@ -35,6 +39,12 @@ dependencies {
     implementation group: 'io.prometheus', name: 'simpleclient_hotspot', version: '0.16.0'
     implementation group: 'io.prometheus', name: 'simpleclient_httpserver', version: '0.16.0'
     implementation group: 'commons-cli', name: 'commons-cli', version: '1.4'
+    aerprom group: 'io.aeron', name: 'aeron-driver', version: '1.41.4'
+    aerprom group: 'io.aeron', name: 'aeron-archive', version: '1.41.4'
+    aerprom group: 'io.prometheus', name: 'simpleclient', version: '0.16.0'
+    aerprom group: 'io.prometheus', name: 'simpleclient_hotspot', version: '0.16.0'
+    aerprom group: 'io.prometheus', name: 'simpleclient_httpserver', version: '0.16.0'
+    aerprom group: 'commons-cli', name: 'commons-cli', version: '1.4'
 }
 
 task fatJar(type: Jar) {
@@ -50,21 +60,21 @@ task fatJar(type: Jar) {
 
 final String LINE_BREAK = System.getProperty("line.separator")
 
-task copyExternalLibrariesTask() {
-
-    def externalLibraries = new FileTreeBuilder(new File("${rootProject.projectDir}/external-libraries"))
+task copyExternalLibrariesTask(type: Copy) {
+    def extLibFile = new File("${rootProject.projectDir}${File.separator}external-libraries")
+    def externalLibraries = new FileTreeBuilder(extLibFile)
     def versions = new StringBuilder()
-
-    from configurations.getByName("implementation")
+    project.logger.lifecycle("${rootProject.projectDir}${File.separator}external-libraries")
+    from configurations.getByName("aerprom")
     into externalLibraries.baseDir
     doLast {
-        project.configurations.getByName("implementation").getAllDependencies().each {
+        project.configurations.getByName("aerprom").getAllDependencies().each {
             // strip version number out of agent jar
             // rename "-${it.version}", ""
             versions.append("group: $it.group, name: $it.name, version: $it.version").append(LINE_BREAK)
         }
         // Add versions file with detailed version of each dependency
-        def versionsFile = new File("${externalLibraries.baseDir}/versions.txt")
+        def versionsFile = new File("${rootProject.projectDir}${File.separator}versions.txt")
         versionsFile.createNewFile()
         versionsFile.text = versions.toString()
     }
