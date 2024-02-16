@@ -14,10 +14,11 @@
 # limitations under the License.
 #
 
-# OpenJDK13 not available for alpine linux > 3.18 as of 1 feb 2024
 FROM ghcr.io/vermicfintech/vermiculus-temurin:17.0.6_10-jdk-v2
 
-RUN apt-get update && apt-get install dos2unix
+ADD https://releases.hashicorp.com/consul/1.14.5/consul_1.14.5_linux_amd64.zip /tmp
+
+RUN apt-get update && apt-get install dos2unix && apt-get install -y -q unzip
 
 COPY . /aeron-prometheus-stats/
 
@@ -26,6 +27,8 @@ RUN ls /aeron-prometheus-stats/
 RUN dos2unix /aeron-prometheus-stats/gradlew
 RUN cd  /aeron-prometheus-stats/ && ./gradlew fatJar
 RUN cp /aeron-prometheus-stats/build/libs/aeron-prometheus-stats-all-1.0-SNAPSHOT.jar /opt/aeron-prometheus-stats/lib
+RUN unzip -d /aeron-prometheus-stats /tmp/consul_1.14.5_linux_amd64.zip
+
 
 ARG IMAGE_DATE
 ARG IMAGE_VERSION
@@ -35,3 +38,5 @@ LABEL org.opencontainers.image.created=$IMAGE_DATE
 LABEL org.opencontainers.image.version=$IMAGE_VERSION
 LABEL org.opencontainers.image.title="vermiculus-aeron-prometheus-stats"
 LABEL org.opencontainers.image.description="Tool for exporting Aeron stats to Prometheus"
+
+ENTRYPOINT ["/aeron-prometheus-stats/start.sh"]

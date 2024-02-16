@@ -202,7 +202,7 @@ Start by building the jar:
 If you want to verify that the build works locally run the following command. Note that this image will not be available in your local docker environment.
 
 ```shell
-/gradlew copyExternalLibrariesTo
+/gradlew copyExternalLibrariesTask
 docker buildx create --use
 docker buildx build --platform linux/arm64,linux/amd64 --tag ghcr.io/vermicfintech/vermiculus-aeron-prometheus-stat:<image tag>-<image version> .
 ```
@@ -211,7 +211,7 @@ docker buildx build --platform linux/arm64,linux/amd64 --tag ghcr.io/vermicfinte
 To push the image after the build add the `--push` parameter. This overwrites images with the same name on our container repository.
 
 ```shell
-./gradlew copyExternalLibrariesTo
+./gradlew copyExternalLibrariesTask
 docker buildx create --use
 docker buildx build --platform linux/arm64,linux/amd64 --tag ghcr.io/vermicfintech/vermiculus-aeron-prometheus-stat:<image tag>-<image version> --push .
 ```
@@ -220,7 +220,7 @@ docker buildx build --platform linux/arm64,linux/amd64 --tag ghcr.io/vermicfinte
 
 If you want to run the container locally you can only build for a single platform and you need to add the `--load` option that will download the image to your local docker image cache.
 ```shell
-./gradlew copyExternalLibrariesTo
+./gradlew copyExternalLibrariesTask
 docker buildx create --use
 docker buildx build --load --tag ghcr.io/vermicfintech/vermiculus-aeron-prometheus-stat:<image tag>-<image version> .
 docker run ghcr.io/vermicfintech/vermiculus-temurin:<image tag>-<image version>

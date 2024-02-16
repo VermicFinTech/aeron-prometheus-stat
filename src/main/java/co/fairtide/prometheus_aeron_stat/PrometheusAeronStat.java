@@ -203,6 +203,8 @@ public class PrometheusAeronStat {
                             this.numClientCounter++;
                             break;
                         default:
+                            this.updateSystemCounter(counters, counterId, typeId, label);
+                            //System.out.format("%3d: %,20d - %s%n", counterId, typeId, label); //DEBUG
                             System.out.println("\t****");
                             break;
                     }
